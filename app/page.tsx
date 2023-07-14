@@ -26,10 +26,10 @@ export default function Home() {
     const c1:any = document.getElementById("currency1");
     const c2:any = document.getElementById("currency2");
     if(c1) {
-      c1.value = to;
+      c1.value = from;
     }
     if (c2) {
-      c2.value = from;
+      c2.value = to;
     }
     await Promise.all([
     setConversionAmt(val),
