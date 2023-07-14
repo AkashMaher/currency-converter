@@ -1,73 +1,65 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-"use client"
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 import currencyapi from "@everapi/currencyapi-js";
 
-const apiKey = process.env.NEXT_PUBLIC_API_KEY ||'';
-  const client = new currencyapi(apiKey);
+const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
+const client = new currencyapi(apiKey);
 
 export default function Home() {
-
-    const [currencyFrom, setCurrencyFrom] = useState("INR");
-    const [currencyTo, setCurrencyTo] = useState("USD");
-    const [conversionAmount, setConversionAmt] = useState(0);
-    const [inputVal, setInputVal] = useState(0);
-    const [convertedVal, setConvertedVal] = useState(0);
-
-  
-
-
+  const [currencyFrom, setCurrencyFrom] = useState("INR");
+  const [currencyTo, setCurrencyTo] = useState("USD");
+  const [conversionAmount, setConversionAmt] = useState(0);
+  const [inputVal, setInputVal] = useState(0);
+  const [convertedVal, setConvertedVal] = useState(0);
 
   async function swapButton() {
-    let [to, from] = [currencyFrom, currencyTo]
-    const res = await client.latest({ base_currency:from, currencies: to });
-    let val = res?.data?.[to]?.value
-    const c1:any = document.getElementById("currency1");
-    const c2:any = document.getElementById("currency2");
-    if(c1) {
+    let [to, from] = [currencyFrom, currencyTo];
+    const res = await client.latest({ base_currency: from, currencies: to });
+    let val = res?.data?.[to]?.value;
+    const c1: any = document.getElementById("currency1");
+    const c2: any = document.getElementById("currency2");
+    if (c1) {
       c1.value = from;
     }
     if (c2) {
       c2.value = to;
     }
     await Promise.all([
-    setConversionAmt(val),
-    setConvertedVal(inputVal>0?val*inputVal:0),
-    setCurrencyFrom(from),
-    setCurrencyTo(to)
-    ])
-    
+      setConversionAmt(val),
+      setConvertedVal(inputVal > 0 ? val * inputVal : 0),
+      setCurrencyFrom(from),
+      setCurrencyTo(to),
+    ]);
   }
 
-  async function convertButton(){
-  const res = await client.latest({ base_currency: currencyFrom, currencies: currencyTo });
+  async function convertButton() {
+    const res = await client.latest({
+      base_currency: currencyFrom,
+      currencies: currencyTo,
+    });
 
-  setConvertedVal((res?.data?.[currencyTo]?.value)*inputVal);
-
+    setConvertedVal(res?.data?.[currencyTo]?.value * inputVal);
   }
 
-  async function inputs(e:any) {
-    setInputVal(parseFloat(e.target.value))
+  async function inputs(e: any) {
+    setInputVal(parseFloat(e.target.value));
   }
 
-  async function changeCurrency(e: any, event:any) {
+  async function changeCurrency(e: any, event: any) {
     let [to, from] = [currencyTo, currencyFrom];
-    if(event==='from') {
-    setCurrencyFrom(e.target.value);
-    from = e.target.value
+    if (event === "from") {
+      setCurrencyFrom(e.target.value);
+      from = e.target.value;
+    } else {
+      setCurrencyTo(e.target.value);
+      to = e.target.value;
     }
-    else {
-    setCurrencyTo(e.target.value)
-    to = e.target.value;
-  }
 
-    
     const res = await client.latest({ base_currency: from, currencies: to });
     let val = res?.data?.[to]?.value;
     setConversionAmt(val);
-
-
   }
   return (
     <main className=" bg-white min-h-screen flex items-center ">
@@ -77,7 +69,7 @@ export default function Home() {
             Currency Converter
           </h1>
         </div>
-        <div className="w-[320px] h-[300px] border-[#E7E7EE] rounded-2xl ">
+        <div className="w-[320px] h-[290px] border-[#E7E7EE] rounded-2xl ">
           <div className="w-[280px] h-[77px] top-[85px] left-[20px] text-[#1f2261] rounded-2xl">
             <p className="text-start pl-2 text-sm">Amount</p>
             <div className="flex justify-between pl-5">
@@ -102,8 +94,8 @@ export default function Home() {
               ></input>
             </div>
             <div className="">
-              {/* <hr className="absolute bg-[#7d7d7d] h-[2px] w-72 mt-10 z-" /> */}
-              <button className='mt-4' onClick={swapButton}>
+              <hr className=" bg-[#7d7d7d] h-[2px] w-72 mt-10 absolute" />
+              <button className="mt-5 z-10" onClick={swapButton}>
                 <img src="swap.svg"></img>
               </button>
             </div>
