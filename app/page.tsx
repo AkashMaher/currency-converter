@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import Image from 'next/image'
 import { useState } from 'react';
 import currencyapi from "@everapi/currencyapi-js";
 
@@ -23,7 +22,6 @@ export default function Home() {
   async function swapButton() {
     let [to, from] = [currencyFrom, currencyTo]
     const res = await client.latest({ base_currency:from, currencies: to });
-    console.log(res?.data)
     let val = res?.data?.[to]?.value
     const c1:any = document.getElementById("currency1");
     const c2:any = document.getElementById("currency2");
@@ -33,7 +31,6 @@ export default function Home() {
     if (c2) {
       c2.value = from;
     }
-    console.log(c1)
     await Promise.all([
     setConversionAmt(val),
     setConvertedVal(inputVal>0?val*inputVal:0),
@@ -45,16 +42,13 @@ export default function Home() {
 
   async function convertButton(){
   const res = await client.latest({ base_currency: currencyFrom, currencies: currencyTo });
-  console.log(res?.data);
 
   setConvertedVal((res?.data?.[currencyTo]?.value)*inputVal);
 
   }
 
   async function inputs(e:any) {
-    // console.log(e.target.value)
     setInputVal(parseFloat(e.target.value))
-    // console.log(parseFloat(e.target.value));
   }
 
   async function changeCurrency(e: any, event:any) {
@@ -70,7 +64,6 @@ export default function Home() {
 
     
     const res = await client.latest({ base_currency: from, currencies: to });
-    console.log(res?.data);
     let val = res?.data?.[to]?.value;
     setConversionAmt(val);
 
