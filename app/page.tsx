@@ -25,7 +25,15 @@ export default function Home() {
     const res = await client.latest({ base_currency:from, currencies: to });
     console.log(res?.data)
     let val = res?.data?.[to]?.value
-
+    const c1:any = document.getElementById("currency1");
+    const c2:any = document.getElementById("currency2");
+    if(c1) {
+      c1.value = to;
+    }
+    if (c2) {
+      c2.value = from;
+    }
+    console.log(c1)
     await Promise.all([
     setConversionAmt(val),
     setConvertedVal(inputVal>0?val*inputVal:0),
